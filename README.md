@@ -48,6 +48,8 @@ GlobalHealthAtlas/
 │   │   ├── prompt_builder.py     # Dynamic prompt construction from templates - builds evaluation prompts from the template with actual data
 │   │   ├── model_initializer.py  # Model loading, tokenizer setup, and parameter configuration - initializes vLLM engine with proper parameters
 │   │   └── batch_processor.py    # Batch processing logic with error handling - processes data in batches using vLLM for evaluation
+│   │   └── inference.py          # Model inference script without training, designed for benchmarking on multiple languages.
+│   │   └── leakage_inference.py  # data leakage inference module for n-gram continuation detection using DashScope (OpenAI compatible) API.
 │   ├── handlers/                 # Processing handlers
 │   │   ├── __init__.py           # Handlers package initializer
 │   │   └── file_processor.py     # File-level processing orchestration with batching - manages processing of individual files with checkpointing

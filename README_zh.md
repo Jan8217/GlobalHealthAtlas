@@ -66,6 +66,8 @@ GlobalHealthAtlas/
 │   │   ├── prompt_builder.py     # 从模板动态构建提示 - 从模板中获取数据项并填充个性化评估提示
 │   │   ├── model_initializer.py  # 模型加载、分词器设置和参数配置 - 用适当的张量并行、内存管理和引导解码参数初始化 vLLM 引擎
 │   │   └── batch_processor.py    # 批处理逻辑（含错误处理）- 使用 vLLM 进行评估，处理批次数据
+│   │   └── inference.py          # 未经训练的模型推理脚本，为多语言基准测试设计.
+│   │   └── leakage_inference.py  # 数据泄露检测推理方法.
 │   ├── handlers/                 # 处理器
 │   │   ├── __init__.py           # 处理器包初始化器
 │   │   └── file_processor.py     # 文件级处理编排（含批处理）- 使用检查点管理单个文件的处理
