@@ -1,0 +1,29 @@
+# GlobalHealthAtlas Configuration
+
+# Model settings
+model:
+  path: "/home/ubuntu1/.cache/modelscope/hub/models/Qwen3-8B-Merged/"
+  base_path: "/home/ubuntu1/.cache/modelscope/hub/models/Qwen/Qwen3-8B/"
+  max_length: 40960
+  
+# Processing settings
+processing:
+  batch_size: 4000
+  checkpoint_file: "/home/ubuntu1/.cache/modelscope/hub/models/test_score/global_checkpoint.json"
+  
+# File pairs for processing
+file_pairs:
+  - input: "/home/ubuntu1/.cache/modelscope/hub/models/27500/waitmedium/result_llama70B00.json"
+    output: "/home/ubuntu1/.cache/modelscope/hub/models/27500/waitmedium/result_llama70B00_score.json"
+
+# Scoring dimensions
+dimensions:
+  - "Accuracy"
+  - "Reasoning"
+  - "Completeness"
+  - "Consensus Alignment"
+  - "Terminology Norms"
+  - "Insightfulness"
+
+# Stop token IDs
+stop_token_ids: [151643, 151645]
