@@ -5,6 +5,26 @@
 
 一个大规模、多语言的公共卫生推理数据集及其评估框架。
 
+## 🎓 论文链接和资源
+
+### 论文摘要
+我们的研究论文介绍了 GlobalHealthAtlas，这是一个大规模结构化健康推理数据集，包含 280,210 个精选实例，涵盖 15 个公共卫生领域和 17 种语言。该论文解决了结构化机器学习问题在公共卫生推理方面的关键缺口，在这一安全关键领域中，LLM 缺乏合适的训练信号或可靠的基准。
+
+### 论文的关键创新：
+1. **以证据为中心的数据工程流水线**：一种新颖的流水线，将异构的公共卫生 PDF 转换为结构化 Markdown，分割为证据块，并合成具有多维元数据的问题-答案对。
+
+2. **领域对齐评估器**：一个专门的评估模型，经过训练以沿六个互补维度评估输出：准确性、推理、完整性、共识对齐、术语规范和洞察力。
+
+3. **LLM 支持的质量控制**：一种创新方法，利用 LLM 进行多阶段过滤、验证和细化，以确保大规模数据一致性。
+
+4. **跨语言能力**：支持 17 种语言，具有针对多语言环境调整的领域特定评估标准。
+
+### 实验结果
+该论文展示了即使最先进的 LLM 在鲁棒公共卫生推理方面也存在显著局限性，特别是在现实扰动和跨语言环境中。我们的评估框架显示出与参考判断的卓越一致性（ICC = 0.9735）和相比通用评估器的稳定性。
+
+### 研究影响
+这项工作有助于在安全关键领域中为现实世界决策开发可靠的大型语言模型，为推进领域对齐推理数据集和评估方法建立了一个原则性基础。
+
 ## 📊 数据集概览
 
 GlobalHealthAtlas 是一个综合性的数据集，包含 280,210 个实例，涵盖 15 个公共卫生领域和 17 种语言。它涵盖了两种任务格式（问答和单选）和三个难度级别（A/B/C）。
@@ -19,7 +39,7 @@ GlobalHealthAtlas 是一个综合性的数据集，包含 280,210 个实例，�
 
 ### 研究论文
 
-此仓库包含了我们 ICML 2026 论文《From Knowledge to Inference: Scaling Laws of Specialized Reasoning on GlobalHealthAtlas》中描述的实现和评估框架。该论文展示了：
+此仓库包含了我们研究论文《From Knowledge to Inference: Scaling Laws of Specialized Reasoning on GlobalHealthAtlas》中描述的实现和评估框架。该论文展示了：
 
 - 一个包含 280,210 个精选实例的大规模结构化健康推理数据集
 - 一个支持 LLM 的数据构建和质量控制流水线
@@ -40,24 +60,24 @@ GlobalHealthAtlas/
 │   │   ├── __init__.py           # 配置包初始化器 - 初始化配置包
 │   │   ├── paths.py              # 路径配置和文件位置 - 管理模型路径和文件 I/O 位置
 │   │   ├── model_config.py       # 模型参数、批次大小和 JSON 模式 - 定义 MAX_MODEL_LEN、BATCH_SIZE、JSON_SCHEMA 用于引导解码
-│   │   └── prompts.py            # 综合评估提示模板 - 包含论文中描述的 6 维评估提示
+│   │   └── prompts.py            # 综合评估提示模板 - 包含论文中描述的详细 6 维评估提示
 │   ├── core/                     # 核心功能
 │   │   ├── __init__.py           # 核心包初始化器
 │   │   ├── prompt_builder.py     # 从模板动态构建提示 - 从模板中获取数据项并填充个性化评估提示
 │   │   ├── model_initializer.py  # 模型加载、分词器设置和参数配置 - 用适当的张量并行、内存管理和引导解码参数初始化 vLLM 引擎
-│   │   └── batch_processor.py    # 批处理逻辑（含错误处理）- 实现核心批处理逻辑，处理令牌长度验证，过滤过长输入，通过模型处理有效输入
+│   │   └── batch_processor.py    # 批处理逻辑（含错误处理）- 使用 vLLM 进行评估，处理批次数据
 │   ├── handlers/                 # 处理器
 │   │   ├── __init__.py           # 处理器包初始化器
-│   │   └── file_processor.py     # 文件级处理编排（含批处理）- 管理文件级处理与检查点，读取输入文件，将数据划分为批次，为每批次调用批处理器
+│   │   └── file_processor.py     # 文件级处理编排（含批处理）- 使用检查点管理单个文件的处理
 │   ├── utils/                    # 实用函数
 │   │   ├── __init__.py           # 实用工具包初始化器
-│   │   ├── data_handler.py       # 数据加载/保存（带原子写入）- 提供安全的数据 I/O 操作，使用原子写入防止中断时文件损坏
+│   │   ├── data_handler.py       # 数据加载/保存（带原子写入）- 使用原子写入保护处理 JSON I/O 操作
 │   │   └── checkpoint_manager.py # 检查点保存/加载（用于中断恢复）- 管理检查点持久化以启用恢复功能
-│   └── main.py                   # 主应用程序入口点 - 协调整个管道
+│   └── main.py                   # 主应用程序入口点 - 协调整个评估流水线
 ├── experiments/                  # 实验脚本
 │   ├── __init__.py               # 实验包初始化器
 │   ├── experiment_runner.py      # 实验执行接口 - 为运行实验提供命令行界面
-│   └── result_analyzer.py        # 结果分析和 Excel 导出 - 分析评分结果并创建详细的 Excel 报告
+│   └── result_analyzer.py        # 结果分析和 Excel 导出 - 分析评分结果并以统计分解导出到 Excel
 ├── scoring/                      # 评分功能
 │   ├── __init__.py               # 评分包初始化器
 │   └── scorer.py                 # 评分接口（带命令行支持）- 运行评分过程的主要接口
@@ -111,7 +131,7 @@ GlobalHealthAtlas/
 ### 安装
 
 ```bash
-git clone https://github.com/yourusername/GlobalHealthAtlas.git
+git clone https://github.com/globalhealthatlas/GlobalHealthAtlas.git
 cd GlobalHealthAtlas
 pip install -r requirements.txt
 ```
@@ -264,8 +284,7 @@ bash train_lora.sh
 ```bibtex
 @article{globalhealthatlas2026,
   title={From Knowledge to Inference: Scaling Laws of Specialized Reasoning on GlobalHealthAtlas},
-  author={Your Name},
-  journal={ICML},
+  author={GlobalHealthAtlas Team},
   year={2026}
 }
 ```

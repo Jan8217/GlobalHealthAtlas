@@ -1,7 +1,9 @@
 # GlobalHealthAtlas
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/downloads/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+
+[中文文档](./README_zh.md)
 
 A large-scale, multilingual dataset for public health reasoning and its evaluation framework.
 
@@ -19,7 +21,7 @@ GlobalHealthAtlas is a comprehensive dataset of 280,210 instances spanning 15 pu
 
 ### Research Paper
 
-This repository contains the implementation and evaluation framework described in our ICML 2026 paper: "From Knowledge to Inference: Scaling Laws of Specialized Reasoning on GlobalHealthAtlas". The paper presents:
+This repository contains the implementation and evaluation framework described in our research paper: "From Knowledge to Inference: Scaling Laws of Specialized Reasoning on GlobalHealthAtlas". The paper presents:
 
 - A large-scale, structured health reasoning dataset with 280,210 curated instances
 - An LLM-supported data construction and quality control pipeline
@@ -111,7 +113,7 @@ Each dimension is scored on a 0-10 scale with detailed rubrics based on the pape
 ### Installation
 
 ```bash
-git clone https://github.com/yourusername/GlobalHealthAtlas.git
+git clone https://github.com/globalhealthatlas/GlobalHealthAtlas.git
 cd GlobalHealthAtlas
 pip install -r requirements.txt
 ```
@@ -264,8 +266,7 @@ Output files will contain the same fields plus:
 ```bibtex
 @article{globalhealthatlas2026,
   title={From Knowledge to Inference: Scaling Laws of Specialized Reasoning on GlobalHealthAtlas},
-  author={Your Name},
-  journal={ICML},
+  author={GlobalHealthAtlas Team},
   year={2026}
 }
 ```
@@ -279,3 +280,23 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 We thank the public health community for providing valuable data sources and evaluation standards. This work was supported by our research team's commitment to advancing AI for social good in public health.
 
 The GlobalHealthAtlas dataset represents a significant contribution to the field of AI-assisted public health reasoning, providing a robust framework for evaluating and improving LLM capabilities in safety-critical health domains. Based on our research findings, even state-of-the-art LLMs exhibit substantial limitations in robust public health reasoning, particularly under realistic perturbations and cross-lingual settings, highlighting both the current gaps and the untapped potential of LLMs in this domain.
+
+## 🎓 Paper Links and Resources
+
+### Paper Abstract
+Our research paper introduces GlobalHealthAtlas, a large-scale, structured health reasoning dataset with 280,210 curated instances spanning 15 public health domains and 17 languages. The paper addresses the critical gap in structured machine learning problems for public health reasoning, where LLMs lack suitable training signals or reliable benchmarks in this safety-critical domain.
+
+### Key Innovations from the Paper:
+1. **Evidence-Centric Data Engineering Pipeline**: A novel pipeline that converts heterogeneous public health PDFs into structured Markdown, segments into evidence chunks, and synthesizes question-answer pairs with multi-dimensional metadata.
+
+2. **Domain-Aligned Evaluator**: A specialized evaluation model trained to assess outputs along six complementary dimensions: Accuracy, Reasoning, Completeness, Consensus Alignment, Terminology Norms, and Insightfulness.
+
+3. **LLM-Supported Quality Control**: An innovative approach that leverages LLMs for multi-stage filtering, validation, and refinement to ensure data consistency at scale.
+
+4. **Cross-Lingual Capability**: Support for 17 languages with domain-specific evaluation criteria adapted for multilingual settings.
+
+### Experimental Results
+The paper demonstrates that even state-of-the-art LLMs exhibit substantial limitations in robust public health reasoning, particularly under realistic perturbations and cross-lingual settings. Our evaluation framework shows superior agreement with reference judgments (ICC = 0.9735) and stability compared to general-purpose evaluators.
+
+### Research Impact
+This work contributes to the broader development of reliable large language models for real-world decision-making in safety-critical domains, establishing a principled foundation for advancing domain-aligned reasoning datasets and evaluation methodologies.
