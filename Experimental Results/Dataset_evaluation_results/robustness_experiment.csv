@@ -1,0 +1,25 @@
+﻿Unnamed: 0,dataset,准确率,有效数据
+qwen3-8b 原始,cross_lingual_score,0.8168,928
+,paraphrase_score,0.8391,889
+,Public_Benchmark1000,0.8541,891
+,Public_Benchmark_Noisy_score,0.7726,950
+qwen3-8b 100%微调,cross_lingual_score,0.844,1000
+,paraphrase_score,0.86,1000
+,Public_Benchmark1000,0.873,1000
+,Public_Benchmark_Noisy_score,0.7734,993
+ds-r1-distill-qwen,cross_lingual_score,0.6152,933
+,paraphrase_score,0.494,923
+,Public_Benchmark1000,0.4555,898
+,Public_Benchmark_Noisy_score,0.4,870
+claude,cross_lingual_score,0.6589,985
+,paraphrase_score,0.58,988
+,Public_Benchmark1000,0.6469,994
+,Public_Benchmark_Noisy_score,0.6458,960
+Qwen3-14B,cross_lingual_score,0.819,1000
+,paraphrase_score,0.827,1000
+,Public_Benchmark1000,0.833,1000
+,Public_Benchmark_Noisy_score,0.771,1000
+llama3.1-8B,cross_lingual_score,0.7309,799
+,paraphrase_score,0.7053,733
+,Public_Benchmark1000,0.7089,694
+,Public_Benchmark_Noisy_score,0.5,872

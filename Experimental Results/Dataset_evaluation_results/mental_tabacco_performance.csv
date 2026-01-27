@@ -1,0 +1,6 @@
+﻿Unnamed: 0,Unnamed: 1,Question-Answer,Unnamed: 3,Unnamed: 4,Unnamed: 5,Unnamed: 6,Unnamed: 7,Single-Choice,Unnamed: 9,Unnamed: 10,Unnamed: 11,Unnamed: 12,Unnamed: 13,Unnamed: 14,Unnamed: 15
+Dataset,Model,Accuracy,Reasoning,Completeness,Consensus Alignment,Terminology Norms,Insightfulness,Accuracy,Reasoning,Completeness,Consensus Alignment,Terminology Norms,Insightfulness,有效数据条数,无效数据条数
+Mental,qwen3-8b 原始,4.070833,5.2125,4.279167,6.933333,6.891667,5.05,8.717949,7.061538,6.441026,8.569231,7.005128,6.287179,435,1
+,qwen3-8b 100%数据微调,4.145228,5.456432,4.46473,6.854772,7.356846,5.302905,9.179487,7.953846,7.835897,9.338462,8.087179,6.784615,436,0
+Tabacco,qwen3-8b 原始,3.525822,4.671362,3.967136,6.460094,6.732394,4.638498,7.882736,6.70684,6.175896,8.325733,7,6.013029,520,2
+,qwen3-8b 100%数据微调,3.638498,4.910798,4.300469,6.615023,7.460094,5.150235,8.414239,7.579288,7.530744,9.003236,8.168285,6.495146,522,0

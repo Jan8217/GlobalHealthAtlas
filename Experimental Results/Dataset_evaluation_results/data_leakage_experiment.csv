@@ -1,0 +1,13 @@
+﻿Model,prop1,prop2
+qwen-5,0.0,
+qwen-10,0.0,
+claude3.5-sonnet-thingking-5,0.0,
+claude3.5-sonnet-thinking-10,0.0,
+gemini3-thinking-preview-5,0.0,
+gemini3-thinking-preview-10,0.0,
+grok3-mini-5,0.0005,1.0
+grok3-mini-10,0.0,
+deepseekv3-5,0.0005,0.0
+deepseekv3-10,0.0,
+qwen3-max-5,0.0097,0.5
+qwen3-max-10,0.0,
