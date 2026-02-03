@@ -5,9 +5,10 @@ import torch
 from vllm import LLM, SamplingParams
 from vllm.sampling_params import StructuredOutputsParams
 from transformers import AutoTokenizer
+
 INPUT_OUTPUT_PAIRS = [
     {"input": "./mad/mad_4b100_answer.json", "output": "./mad/mad_4b100_score.json"},
-   {"input": "./mad/mad_8b100_answer.json", "output": "./mad/mad_8b100_score.json"}
+    {"input": "./mad/mad_8b100_answer.json", "output": "./mad/mad_8b100_score.json"}
 ]
 
 CHECKPOINT_FILE = "checkpoint.json"
@@ -15,7 +16,6 @@ model_path = "/root/autodl-fs/Qwen3-8B-Merged/"
 base_model_path = "/root/autodl-fs/Qwen3-8B-Merged/"
 
 MAX_MODEL_LEN = 40960
-BATCH_SIZE = 4000 
 json_schema = {
     "type": "object",
     "properties": {
@@ -308,7 +308,7 @@ def main():
         output_path = file_pair["output"]
 
         print(f"\n{'='*60}")
-        print(f"处理文件对 {pair_idx}/{total_pairs}")
+        print(f"Processing file pair {pair_idx}/{total_pairs}")
         print(f"Input: {input_path}")
         print(f"Output: {output_path}")
         print(f"{'='*60}")
@@ -325,7 +325,6 @@ def main():
         start_index = 0
         current_checkpoint = output_path.replace(".json", "_checkpoint.json")
 
-
         if os.path.exists(current_checkpoint):
             print(f"Found checkpoint file {current_checkpoint}, attempting to load...")
             try:
@@ -337,78 +336,56 @@ def main():
                 print(f"Failed to load checkpoint: {e}, starting over.")
                 final_results = []
 
-        for i in range(start_index, total_items, BATCH_SIZE):
-            batch_end = min(i + BATCH_SIZE, total_items)
-            current_batch_items = input_data[i:batch_end]
+        for i in range(start_index, total_items):
+            item = input_data[i]
+            item_id = item.get('id', f'unknown_{i}')
 
-            print(f"\nProcessing Batch: {i} to {batch_end} (Progress: {i/total_items:.1%})...")
+            print(f"\nProcessing item {i+1}/{total_items} (ID: {item_id})...")
 
-            valid_prompts = []
-            valid_indices = []
-            batch_results = [None] * len(current_batch_items)
+            user_prompt = build_prompt(item)
+            messages = [
+                {"role": "system", "content": "You are a Distinguished Professor of Public Health and Infectious Disease Surveillance acting as an expert evaluator (LLM-as-a-Judge).\n"},
+                {"role": "user", "content": user_prompt}
+            ]
+            text_input = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
 
-            for idx, item in enumerate(current_batch_items):
-                item_id = item.get('id', f'unknown_{i+idx}')
+            token_ids = tokenizer.encode(text_input)
+            if len(token_ids) > SAFE_INPUT_LIMIT:
+                print(f"  Warning: Prompt too long ({len(token_ids)} tokens), skipping")
+                result_item = item.copy()
+                result_item['scores'] = None
+                result_item['error'] = f"Prompt length {len(token_ids)} > limit {SAFE_INPUT_LIMIT}"
+                result_item['raw_response'] = ""
+                final_results.append(result_item)
+                continue
 
-                user_prompt = build_prompt(item)
-                messages = [
-                    {"role": "system", "content": "You are a Distinguished Professor of Public Health and Infectious Disease Surveillance acting as an expert evaluator (LLM-as-a-Judge).\n"},
-                    {"role": "user", "content": user_prompt}
-                ]
-                text_input = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+            outputs = llm.generate([text_input], sampling_params)
+            output = outputs[0]
+            response = output.outputs[0].text
 
-                token_ids = tokenizer.encode(text_input)
-                if len(token_ids) > SAFE_INPUT_LIMIT:
-                    print(f"⚠️  [Skip] ID: {item_id} Too Long ({len(token_ids)} tokens)")
-                    batch_results[idx] = {
-                        'id': item_id,
-                        'scores': None,
-                        'error': f"Prompt length {len(token_ids)} > limit {SAFE_INPUT_LIMIT}",
-                        'raw_response': ""
-                    }
-                else:
-                    valid_prompts.append(text_input)
-                    valid_indices.append(idx)
+            try:
+                score_data = json.loads(response)
+                result_item = item.copy()
+                result_item['scores'] = score_data
+                print(f"  Success: Scores generated")
+            except json.JSONDecodeError as e:
+                result_item = item.copy()
+                result_item['scores'] = None
+                result_item['error'] = str(e)
+                result_item['raw_response'] = response
+                print(f"  Error: JSON decode failed - {e}")
+            except Exception as e:
+                result_item = item.copy()
+                result_item['scores'] = None
+                result_item['error'] = f"Unexpected error: {str(e)}"
+                result_item['raw_response'] = response
+                print(f"  Error: {e}")
 
-            if valid_prompts:
-                outputs = llm.generate(valid_prompts, sampling_params)
+            final_results.append(result_item)
 
-                for v_idx, output in enumerate(outputs):
-                    original_idx = valid_indices[v_idx]
-                    item = current_batch_items[original_idx]
-                    item_id = item.get('id', f'unknown_{i+original_idx}')
-                    response = output.outputs[0].text
-
-                    try:
-                        score_data = json.loads(response)
-                        result_item = item.copy()
-                        result_item['scores'] = score_data
-                        batch_results[original_idx] = result_item
-
-
-                    except json.JSONDecodeError as e:
-                        result_item = item.copy()
-                        result_item['scores'] = None
-                        result_item['error'] = str(e)
-                        result_item['raw_response'] = response
-                        batch_results[original_idx] = result_item
-
-
-                    except Exception as e:
-                        result_item = item.copy()
-                        result_item['scores'] = None
-                        result_item['error'] = f"Unexpected error: {str(e)}"
-                        result_item['raw_response'] = response
-                        batch_results[original_idx] = result_item
-
-            for res in batch_results:
-                if res is None:
-                    final_results.append({'id': 'unknown', 'error': 'Processing logic error'})
-                else:
-                    final_results.append(res)
-
-            print(f"  - Saving checkpoint ({len(final_results)} items)...")
-            save_output_data(final_results, current_checkpoint)
+            if (i + 1) % 10 == 0:
+                print(f"  Saving checkpoint ({len(final_results)} items)...")
+                save_output_data(final_results, current_checkpoint)
 
         print(f"\nFile {output_path} processing complete! Final save to: {output_path}")
         save_output_data(final_results, output_path)
