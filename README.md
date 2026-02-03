@@ -7,6 +7,11 @@
 
 A large-scale, multilingual dataset for public health reasoning and its evaluation framework.
 
+## 🤖 Model Resources
+
+- **Public Evaluator**: [aerovane0/GlobalHealthAtlas_Public_Evaluator](https://huggingface.co/aerovane0/GlobalHealthAtlas_Public_Evaluator) - Specialized evaluation model
+- **Public Model**: [aerovane0/GlobalHealthAtlas_Public_Model](https://huggingface.co/aerovane0/GlobalHealthAtlas_Public_Model) - Public inference model
+
 ## 📊 Dataset Overview
 
 GlobalHealthAtlas is a comprehensive dataset of 280,210 instances spanning 15 public health domains and 17 languages. It covers two task formats (Question-Answer and Single-Choice) and three difficulty levels (A/B/C).

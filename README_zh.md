@@ -5,6 +5,11 @@
 
 一个大规模、多语言的公共卫生推理数据集及其评估框架。
 
+## 🤖 模型资源
+
+- **Public Evaluator**: [aerovane0/GlobalHealthAtlas_Public_Evaluator](https://huggingface.co/aerovane0/GlobalHealthAtlas_Public_Evaluator) - 专用评估模型
+- **Public Model**: [aerovane0/GlobalHealthAtlas_Public_Model](https://huggingface.co/aerovane0/GlobalHealthAtlas_Public_Model) - 公共推理模型
+
 ## 🎓 论文链接和资源
 
 ### 论文摘要
