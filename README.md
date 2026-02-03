@@ -70,6 +70,19 @@ GlobalHealthAtlas/
 ├── scoring/                      # Scoring functionality
 │   ├── __init__.py               # Scoring package initializer
 │   └── scorer.py                 # Scoring interface with command-line support - main interface for running the scoring process
+├── Source Code/                  # Source code
+│   ├── Public Model/              # Public inference model
+│   │   ├── answer_batch.py        # Batch inference script
+│   │   ├── answer_single.py       # Single-item inference script
+│   │   ├── merge_weights.py       # Model weight merging
+│   │   ├── README.md             # English documentation
+│   │   └── README_ZH.md          # Chinese documentation
+│   └── Public Evaluator/         # Public evaluator
+│       ├── scorer_batch.py         # Batch scoring script
+│       ├── scorer_single.py        # Single-item scoring script
+│       ├── merge_weights.py       # Model weight merging
+│       ├── README.md             # English documentation
+│       └── README_ZH.md          # Chinese documentation
 ├── training/                     # Training scripts
 │   ├── __init__.py               # Training package initializer
 │   ├── train_lora.sh             # LoRA fine-tuning script - trains specialized models on GlobalHealthAtlas data
