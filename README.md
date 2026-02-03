@@ -182,6 +182,62 @@ bash train_lora.sh
 
 This script will fine-tune the model on the GlobalHealthAtlas dataset using LoRA, creating specialized models for public health reasoning.
 
+## 📦 Source Code
+
+The project contains two main source code modules for inference and evaluation:
+
+### Public Model
+Generates inference responses for public health questions, supporting both batch and single-item processing.
+
+**Directory**: `Source Code/Public Model/`
+
+**Files**:
+- `answer_batch.py`: Batch processing script
+- `answer_single.py`: Single-item processing script
+- `merge_weights.py`: Merges base model and LoRA weights
+- `README.md`: English documentation
+- `README_ZH.md`: Chinese documentation
+
+**Usage**:
+```bash
+cd "Source Code/Public Model"
+
+# Batch processing
+python answer_batch.py
+
+# Single-item processing
+python answer_single.py
+
+# Merge weights (optional)
+python merge_weights.py
+```
+
+### Public Evaluator
+Evaluates model-generated answers based on six dimensions.
+
+**Directory**: `Source Code/Public Evaluator/`
+
+**Files**:
+- `scorer_batch.py`: Batch scoring script
+- `scorer_single.py`: Single-item scoring script
+- `merge_weights.py`: Merges base model and fine-tuned weights
+- `README.md`: English documentation
+- `README_ZH.md`: Chinese documentation
+
+**Usage**:
+```bash
+cd "Source Code/Public Evaluator"
+
+# Batch scoring
+python scorer_batch.py
+
+# Single-item scoring
+python scorer_single.py
+
+# Merge weights (optional)
+python merge_weights.py
+```
+
 ## 🔧 Configuration Options
 
 ### Path Configuration (`src/config/paths.py`)

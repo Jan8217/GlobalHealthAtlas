@@ -200,6 +200,62 @@ bash train_lora.sh
 
 此脚本将在 GlobalHealthAtlas 数据集上使用 LoRA 对模型进行微调，创建用于公共卫生推理的专用模型。
 
+## 📦 Source Code
+
+项目包含两个主要的源代码模块，分别用于推理和评估：
+
+### Public Model
+用于生成公共健康问题的推理响应，支持批量处理和单条处理。
+
+**目录**: `Source Code/Public Model/`
+
+**文件**:
+- `answer_batch.py`: 批量处理脚本
+- `answer_single.py`: 单条处理脚本
+- `merge_weights.py`: 合并基础模型和 LoRA 权重
+- `README.md`: 英文使用文档
+- `README_ZH.md`: 中文使用文档
+
+**使用方法**:
+```bash
+cd "Source Code/Public Model"
+
+# 批量处理
+python answer_batch.py
+
+# 单条处理
+python answer_single.py
+
+# 合并权重（可选）
+python merge_weights.py
+```
+
+### Public Evaluator
+用于评估模型生成的回答，基于六个维度进行评分。
+
+**目录**: `Source Code/Public Evaluator/`
+
+**文件**:
+- `scorer_batch.py`: 批量评分脚本
+- `scorer_single.py`: 单条评分脚本
+- `merge_weights.py`: 合并基础模型和微调权重
+- `README.md`: 英文使用文档
+- `README_ZH.md`: 中文使用文档
+
+**使用方法**:
+```bash
+cd "Source Code/Public Evaluator"
+
+# 批量评分
+python scorer_batch.py
+
+# 单条评分
+python scorer_single.py
+
+# 合并权重（可选）
+python merge_weights.py
+```
+
 ## 🔧 配置选项
 
 ### 路径配置 (`src/config/paths.py`)
